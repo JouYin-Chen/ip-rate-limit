@@ -5,8 +5,8 @@
 
     ```bash
     cd go/src
-    git clone <project-url>
-    cd rate-limit
+    git clone https://github.com/JouYin-Chen/ip-rate-limit.git
+    cd ip-rate-limit
     ```
 
 2. build code
@@ -30,12 +30,12 @@
     ```bash
     cd go/src
     git clone <project-url>
-    cd rate-limit
+    cd ip-rate-limit
     ```
 
 2. build docker image
     ```bash
-    $docker build . -t rate-limit
+    $docker build . -t ip-rate-limit
     ```
 
 3. run Redis server
@@ -44,7 +44,7 @@
     ```
 4. run service
     ```bash
-    docker run --name rate-limit -p 3000:3000 --link redis -e REDIS_HOST=redis -e REDIS_PORT=6379 -d rate-limit
+    docker run --name ip-rate-limit -p 3000:3000 --link redis -e REDIS_HOST=redis -e REDIS_PORT=6379 -d ip-rate-limit
     ```
 ## API
 
