@@ -85,7 +85,6 @@ func FindValeByHashField(key string, field string) ([]byte, error){
 	defer conn.Close()
 
 	res, err := conn.Do("hget", key, field)
-	// fmt.Println(reflect.TypeOf(res))
 	if err != nil {
 		fmt.Println("hget failed", err)
 		return i, err
@@ -139,7 +138,6 @@ func IncrNumberByKey(key string) {
 	defer conn.Close()
 
 	_, err := conn.Do("incr", key)
-	// fmt.Println(reflect.TypeOf(res))
 	if err != nil {
 		fmt.Println("incr failed", err)
 	} 

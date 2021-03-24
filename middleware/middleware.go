@@ -15,17 +15,18 @@ func RateLimitMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		clientIP, err := getClientIPByRequest(c.Request)
 		if err != nil {
-			fmt.Println("debug5: Getting req.RemoteAddr %v", err)
+			fmt.Println("Getting req.RemoteAddr", err)
+			RespondWithError(400, "Getting req.RemoteAddr error", c)
+		} else {
+			rateLimitingByIp(c, clientIP)
+			IPAddressTracking(clientIP)
+			c.Next()
 		}
-
-		rateLimitingByIp(c, clientIP)
-		IPAddressTracking(clientIP)
-		c.Next()
 	}
 }
 
 func RespondWithError(code int, message string, c *gin.Context) {
-	resp := map[string]string{"Msg": message}
+	resp := map[string]string{"ErrorMsg": message}
 
 	c.JSON(code, resp)
 	c.Abort()
@@ -35,7 +36,7 @@ func RespondWithError(code int, message string, c *gin.Context) {
 func getClientIPByRequest(req *http.Request) (ip string, err error) {
 	IPAddress := req.Header.Get("X-Real-Ip")
 	if IPAddress == "" {
-		fmt.Println("debug1: X-Forwarded-For")
+		fmt.Println("get ip from header: X-Forwarded-For")
 		IPAddress = req.Header.Get("X-Forwarded-For")
 	}
 
@@ -46,13 +47,13 @@ func getClientIPByRequest(req *http.Request) (ip string, err error) {
 				return "", err
 		} else {
 			IPAddress = remoteAddr
-			fmt.Println("debug3: With req.RemoteAddr found IP:%v; Port: %v", remoteAddr, port)
+			fmt.Println("With req.RemoteAddr found IP:%v; Port: %v", remoteAddr, port)
 		}
 	}
 
 	if IPAddress == "" {
 		netIP := net.ParseIP(ip)
-		fmt.Println("debug4:gt ip from net", string(netIP))
+		fmt.Println("get ip from net", string(netIP))
 		if string(netIP) != "" {
 			IPAddress = string(netIP)
 		}

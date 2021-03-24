@@ -16,10 +16,10 @@ func GetUser(c *gin.Context) {
 
   value, err := helper.FindValeByHashField(fmt.Sprintf("User:%v", userID), "name")
   if err != nil {
-    c.JSON(400, gin.H{"Msg": err })
+    c.JSON(400, gin.H{"ErrorMsg": err })
     c.Abort()
   } else if value == nil {
-    c.JSON(400, gin.H{"Msg": "cannot find user id" })
+    c.JSON(400, gin.H{"ErrorMsg": "cannot find user id" })
     c.Abort()
   } else {
     c.JSON(200, gin.H{"userName": string(value)})
@@ -29,7 +29,6 @@ func GetUser(c *gin.Context) {
 
 
 func CreateUser(c *gin.Context) {
-  fmt.Println("CreateUser")
   var user UserInfo
   var uid = uuid.NewV4()
   c.BindJSON(&user)
@@ -43,22 +42,11 @@ func CreateUser(c *gin.Context) {
 
   err := helper.SetHashFieldValue(newUserKey, newUserValue)
   if err != nil {
-    fmt.Println("debug6: set user key error %v", err)
-    c.JSON(400, gin.H{"Msg": "set user key error" })
+    fmt.Println("debug6: set user key error", err)
+    c.JSON(400, gin.H{"ErrorMsg": "set user key error" })
     c.Abort()
   } else {
     c.JSON(200, gin.H{"userID": uid })
     c.Abort()
   }
-
-
-  // value, err := helper.FindValeByHashField(userName, "name")
-	// // key, err := helper.FindUserName("Zoe")
-	// if err != nil {
-	// 	fmt.Println("debug5: Getting key error %v", err)
-	// } else {
-	// 	fmt.Println("get key from redis", string(value))
-	// 	// fmt.Printf("hget value: %s\n", res.([]byte))
-
-	// }
 }
