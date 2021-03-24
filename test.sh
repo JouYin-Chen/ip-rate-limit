@@ -11,10 +11,10 @@ curl_get() {
 }
 
 curl_post() {
-  local times=4
+  local times=40
   response=$(curl -X POST -H "Accept: application/json" -d '{"name" : "Zoe"}' http://localhost:3000/user | jq -r '.userID') 
   echo "User id is $response"
-  echo "get user name $times"
+  echo "Call API $times times and get user name"
   
   curl_get $times $response
 }

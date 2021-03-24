@@ -1,6 +1,6 @@
 # dashboard
 
-## Build code
+## docker build
 1. clone project
 
     ```bash
@@ -9,36 +9,12 @@
     cd ip-rate-limit
     ```
 
-2. build code
-
-    ```bash
-    GOOS=linux go build main.go
-    // 如果是linux 就要在go build 前面加上 $GOOS=linux, build 出來的執行檔才能執行
-    ```
-3. run Redis server
-    ```bash
-    docker run --name redis -p 6379:6379 -d redis
-    ```
-4. run server
-    ```bash
-      ./main.go
-    ```
-
-## docker build
-1. clone project
-
-    ```bash
-    cd go/src
-    git clone <project-url>
-    cd ip-rate-limit
-    ```
-
 2. build docker image
     ```bash
-    $docker build . -t ip-rate-limit
+    docker build . -t ip-rate-limit
     ```
 
-3. run Redis server
+3. run Redis
     ```bash
     docker run --name redis -p 6379:6379 -d redis
     ```
